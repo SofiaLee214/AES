@@ -126,8 +126,8 @@ int main(int argc, char *argv[])
 
 	byte key[AES::DEFAULT_KEYLENGTH];
 	byte iv[AES::BLOCKSIZE];
-	 if (modesup == 7)
-		iv[12];
+	 if ((modesup == 7) || (modesup ==8))
+		 iv[12];
 	 
 	 else if ((modesup ==8) || (modesup ==6))
 			key [AES::MAX_KEYLENGTH];
