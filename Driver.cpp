@@ -59,7 +59,6 @@ using CryptoPP::FileSource;
 using CryptoPP::FileSink;
 
 
-#include <io.h>
 #include <fcntl.h>
 // function connvert str to wstr
 std::wstring string2wstring(const std::string &str)
@@ -74,7 +73,8 @@ std::string wstring2string(const std::wstring &wstr)
 	return converter.to_bytes(wstr);
 }
 
-
+#include <chrono>
+using namespace std::chrono;
 
 #include "ECB.cpp"
 #include "CBC.cpp"
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
 #else
 #endif
 
-    int mode_ende, mode_keyiv,modetext,modesup;
+    int mode_ende=1, mode_keyiv=3,modetext=2,modesup=1;
 	//get mode 
  	wcout << endl<< "1.ECB \t2.CBC \t3.OFB \t4.CTR \t5.CFB \t6.XTS \t7.CCM \t8.GCM";
 	wcout<<"\nEnter mode: "; // Choose mode 
@@ -117,8 +117,8 @@ int main(int argc, char *argv[])
 	std::wcout << "\n1: Secret key and IV are randomly chosen\n2: Input Secret Key and IV from screen\n3: Input Secret Key and IV from file" << std::endl;
 	std::wcout << "Mode: ";
 	std::wcin.sync();
-
 	std::wcin>>mode_keyiv;
+
 	wstring key_cin, iv_cin,plain1, cipher1;
 	string hkey, hiv, decode, bkey, biv, cipher2;
 	string plain,cipher, encoded, recovered;
@@ -227,6 +227,8 @@ int main(int argc, char *argv[])
 	wcout<<"\nEnter mode text: "; // Choose mode for plaintext
 	std::wcin.sync();
     std::wcin >> modetext;
+
+
     switch (modetext)
     {
         case 1:
@@ -252,6 +254,9 @@ int main(int argc, char *argv[])
         }
             break;
     }
+
+	// Measure the start time
+	auto startTime = high_resolution_clock::now();
 	
 	switch (mode_ende)
 	{
@@ -329,6 +334,16 @@ int main(int argc, char *argv[])
 		break;
 	}
 	
+
+    // Your existing code
+
+    // Measure the end time
+    auto endTime = high_resolution_clock::now();
+
+    // Calculate the duration
+    auto duration = duration_cast<milliseconds>(endTime - startTime);
+
+    std::wcout << "Execution time: " << duration.count() << " milliseconds" << std::endl;
 
 	return 0;
 }
